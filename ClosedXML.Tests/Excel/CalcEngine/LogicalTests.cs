@@ -8,6 +8,13 @@ namespace ClosedXML.Tests.Excel.CalcEngine
     public class LogicalTests
     {
         [Test]
+        public void Ifs()
+        {
+            Object actual = XLWorkbook.EvaluateExpr(@"ifs(1 = 2, ""1"", 2 = 2, ""2"", 3 = 2, ""3"")");
+            Assert.AreEqual("2", actual);
+        }
+
+        [Test]
         public void If_2_Params_true()
         {
             Object actual = XLWorkbook.EvaluateExpr(@"if(1 = 1, ""T"")");

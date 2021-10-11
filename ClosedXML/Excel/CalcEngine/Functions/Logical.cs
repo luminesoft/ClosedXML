@@ -11,9 +11,10 @@ namespace ClosedXML.Excel.CalcEngine
             ce.RegisterFunction("OR", 1, int.MaxValue, Or);
             ce.RegisterFunction("NOT", 1, Not);
             ce.RegisterFunction("IF", 2, 3, If);
+            ce.RegisterFunction("IFS", 2, int.MaxValue, Ifs);
             ce.RegisterFunction("TRUE", 0, True);
             ce.RegisterFunction("FALSE", 0, False);
-            ce.RegisterFunction("IFERROR",2,IfError);
+            ce.RegisterFunction("IFERROR", 2, IfError);
         }
 
         static object And(List<Expression> p)
@@ -55,6 +56,19 @@ namespace ClosedXML.Excel.CalcEngine
                     return p[2].Evaluate();
             }
             else return false;
+        }
+
+        static object Ifs(List<Expression> p)
+        {
+            for (int i = 0; i < p.Count; i = i + 2)
+            {
+                if (p[i].Evaluate() is bool && (bool)p[i].Evaluate())
+                {
+                    return p[i + 1].Evaluate();
+                }
+            }
+
+            return false;
         }
 
         static object True(List<Expression> p)
